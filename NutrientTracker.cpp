@@ -250,13 +250,25 @@ class Day{
 
 };
 
-string getMatlabArray(float MajorArr[3][3], int MajorLen, int MinorLen){
+string getMatlabArray(float Arr[], int len){
     string matlabArr="[";
 
-    for(int i=0; i<MajorLen; i++){
-        float *MinorArr = MajorArr[i];
-        for(int j=0; j<MinorLen; j++){
-            matlabArr+=to_string(MinorArr[j]);
+    for(int i=0; i<len; i++){   
+        matlabArr+=to_string(Arr[i]);
+        if(i<len-1){
+            matlabArr+=" ";
+        }
+    }
+    matlabArr+="]";
+    return matlabArr;
+}
+
+string getMatlabArray(int Arr[], int len){
+    string matlabArr="[";
+
+    for(int i=0; i<len; i++){   
+        matlabArr+=to_string(Arr[i]);
+        if(i<len-1){
             matlabArr+=" ";
         }
     }
@@ -323,8 +335,13 @@ int main()
     }
 
     //testing getmatlabarray
-    float test[3][3] = {{0.1,0.2,0.3},{0.4,0.5,0.6},{0.7,0.8,0.9}};
-    cout<<getMatlabArray(test,3,3);
+    //float test[3][3] = {{0.1,0.2,0.3},{0.4,0.5,0.6},{0.7,0.8,0.9}};
+    //cout<<getMatlabArray(test,3,3);
+    int test[3]={1,2,3};
+    int test2[4]={4,5,6,7};
+    int *newArr = new int[7];
+    newArr= stitchArr(test,3,test2,4);
+    cout<<getMatlabArray(newArr,7)<<endl;
     
     return 0;
 }
