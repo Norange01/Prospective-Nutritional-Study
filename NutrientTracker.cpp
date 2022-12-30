@@ -45,6 +45,12 @@ class Variable{
         hour=H;
         scale=S;
     }
+    Variable(string N, int H, int S){
+        name=N;
+        day=-1;
+        hour=H;
+        scale=S;
+    }
     Variable(){
         name="Null";
         day=-1;
@@ -128,6 +134,12 @@ class Meal{
         Elems= new Element[20];
         elemTail=-1;
     }
+    Meal(int H){
+        day=-1;
+        hour=H;
+        Elems= new Element[20];
+        elemTail=-1;
+    }
     Meal(){
         day=-1;
         hour=-1;
@@ -200,17 +212,23 @@ class Day{
     void addMeal(Meal m){
         //adds meal to respective slot depending on time of the day
         //do array with 24 empty slots for each hour
-        Meals[m.getHour()]=m;
+        int h= m.getHour();
+        m.set(dayIndex,h);
+        Meals[h]=m;
 
     }
 
     void addVariable(Variable v){
-        Variables[v.getHour()]=v;
+        int h=v.getHour();
+        v.set(dayIndex,h);
+        Variables[h]=v;
 
     }
 
     void addOutcome(Variable o){
-        Outcomes[o.getHour()]=o;
+        int h=o.getHour();
+        o.set(dayIndex,h);
+        Outcomes[h]=o;
 
     }
 
