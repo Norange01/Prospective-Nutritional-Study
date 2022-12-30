@@ -176,6 +176,14 @@ class Day{
         Meals = new Meal[24];
         Variables = new Variable[24];
         Outcomes = new Variable[24];
+        dayIndex=-1;
+    }
+    Day(int ind){
+        Meals = new Meal[24];
+        Variables = new Variable[24];
+        Outcomes = new Variable[24];
+        dayIndex=ind;
+        setIndex(dayIndex);
     }
 
     void setIndex(int index){
@@ -256,12 +264,63 @@ string getMatlabArray(float MajorArr[3][3], int MajorLen, int MinorLen){
     return matlabArr;
 }
 
+float *stitchArr(float* arr1, int arr1Len, float* arr2, int arr2Len){
+    int newLen=arr1Len+arr2Len;
+    float *newArr = new float[newLen];
+    int k=0;
+
+    for(int i=0; i<arr1Len; i++){
+        newArr[k]=arr1[i];
+        k++;
+    }
+    for(int j=0; j<arr2Len; j++){
+        newArr[k]=arr2[j];
+        k++;
+    }
+    return newArr;
+}
+
+int *stitchArr(int* arr1, int arr1Len, int* arr2, int arr2Len){
+    int newLen=arr1Len+arr2Len;
+    int *newArr = new int[newLen];
+    int k=0;
+
+    for(int i=0; i<arr1Len; i++){
+        newArr[k]=arr1[i];
+        k++;
+    }
+    for(int j=0; j<arr2Len; j++){
+        newArr[k]=arr2[j];
+        k++;
+    }
+    return newArr;
+}
+
+string *stitchArr(string* arr1, int arr1Len, string* arr2, int arr2Len){
+    int newLen=arr1Len+arr2Len;
+    string *newArr = new string[newLen];
+    int k=0;
+
+    for(int i=0; i<arr1Len; i++){
+        newArr[k]=arr1[i];
+        k++;
+    }
+    for(int j=0; j<arr2Len; j++){
+        newArr[k]=arr2[j];
+        k++;
+    }
+    return newArr;
+}
+
 
 int main()
 {
     
     int len = 3;
     Day *days = new Day[len];
+    for(int i=0; i<len; i++){
+        days[i].setIndex(i);
+    }
 
     //testing getmatlabarray
     float test[3][3] = {{0.1,0.2,0.3},{0.4,0.5,0.6},{0.7,0.8,0.9}};
