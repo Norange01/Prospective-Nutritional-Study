@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <math.h>
+#include <sstream>
 
 using namespace std;
 
@@ -93,11 +94,22 @@ class Element{
         nutrTail=-1;
         Q=-1;
     }
-    void set(int q){
+    void setAmount(int q){
         Q=q;
     }
+    void addNutrient(string nutrname, float amountperq, float q){
+        nutrTail++;
+        Nutrients[nutrTail].set(nutrname, amountperq, q);
+    }
     
-    float getNutrients();
+    float getNutrientVal(string nutrName){
+        for(int i=0;i<nutrTail+1;i++){
+            if(Nutrients[i].getName()==nutrName){
+                return Nutrients[i].getVal();
+            }
+        }
+        cout<<"ERROR: Nutrient not found"<<endl;
+    }
 
     private:
     Nutrient *Nutrients;
@@ -138,7 +150,15 @@ class Meal{
             cout<<"ERROR: No space in Elem array"<<endl;
         }
     }
-    float getNutrients();
+    float getNutrientVal(string nutrName){
+        float nutrSum=0;
+        for(int i=0;i<elemTail+1;i++){
+            
+            nutrSum+= Elems[i].getNutrientVal(nutrName);
+            
+        }
+        return nutrSum;
+    }
     Element *Elems;
     int elemTail; //index of last element in Elems, -1 if it's empty
 
@@ -159,6 +179,7 @@ class Day{
     }
 
     void setIndex(int index){
+        dayIndex=index;
         for(int i=0; i<24; i++){
             Meals[i].set(index,i);
             Variables[i].set(index,i);
@@ -185,6 +206,15 @@ class Day{
 
     }
 
+    float* getNutrArr(string nutrname, float* nutrArr){
+        float* nutrArr = new float[24];
+        for(int i=0; i<24; i++){
+            nutrArr[i]=Meals[i].getNutrientVal(nutrname);
+        }
+        return nutrArr;
+    }
+
+    int dayIndex;
     Meal *Meals;
     Variable *Variables;
     Variable *Outcomes;
@@ -192,9 +222,25 @@ class Day{
 
 };
 
+string getMatlabArray(float **MajorArr, int MajorLen, int MinorLen){
+    string matlabArr="[";
+
+    for(int i=0; i<MajorLen; i++){
+        float *MinorArr = MajorArr[i];
+        for(int j=0; j<MinorLen; j++){
+            matlabArr+=to_string(MinorArr[j]);
+            matlabArr+=" ";
+        }
+    }
+    matlabArr+="]";
+    return matlabArr;
+}
+
 
 int main()
 {
+    Day *days = new Day[20];
+    int len = 20;
     
     return 0;
 }
