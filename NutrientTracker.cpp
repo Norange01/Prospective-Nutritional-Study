@@ -206,12 +206,32 @@ class Day{
 
     }
 
-    float* getNutrArr(string nutrname, float* nutrArr){
+    float* getNutrArr(string nutrname){
         float* nutrArr = new float[24];
         for(int i=0; i<24; i++){
             nutrArr[i]=Meals[i].getNutrientVal(nutrname);
         }
         return nutrArr;
+    }
+
+    int* getVarArr(string varname){
+        int* varArr = new int[24];
+        for(int i=0; i<24; i++){
+            if(Variables[i].getName()==varname){
+                varArr[i]=Variables[i].getScale();
+            }
+        }
+        return varArr;
+    }
+
+    int* getOutcomeArr(string outname){
+        int* outArr = new int[24];
+        for(int i=0; i<24; i++){
+            if(Outcomes[i].getName()==outname){
+                outArr[i]=Variables[i].getScale();
+            }
+        }
+        return outArr;
     }
 
     int dayIndex;
@@ -222,7 +242,7 @@ class Day{
 
 };
 
-string getMatlabArray(float **MajorArr, int MajorLen, int MinorLen){
+string getMatlabArray(float MajorArr[3][3], int MajorLen, int MinorLen){
     string matlabArr="[";
 
     for(int i=0; i<MajorLen; i++){
@@ -239,8 +259,13 @@ string getMatlabArray(float **MajorArr, int MajorLen, int MinorLen){
 
 int main()
 {
-    Day *days = new Day[20];
-    int len = 20;
+    
+    int len = 3;
+    Day *days = new Day[len];
+
+    //testing getmatlabarray
+    float test[3][3] = {{0.1,0.2,0.3},{0.4,0.5,0.6},{0.7,0.8,0.9}};
+    cout<<getMatlabArray(test,3,3);
     
     return 0;
 }
