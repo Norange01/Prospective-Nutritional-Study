@@ -90,10 +90,19 @@ class Variable{
 
 class Element{
     public:
-    Element(int q){
+    Element(float q){
         Nutrients= new Nutrient[20];
         nutrTail=-1;
         Q=q;
+    }
+    Element(float q, string nutrnames[], float nutrvals[], int arrlen){
+        Q=q;
+        Nutrients= new Nutrient[20];
+        nutrTail=-1;
+        for(int i=0; i<arrlen; i++){
+            Nutrients[i].set(nutrnames[i],nutrvals[i],Q);
+            nutrTail++;
+        }
     }
     Element(){
         Nutrients= new Nutrient[20];
@@ -162,6 +171,11 @@ class Meal{
             cout<<"ERROR: No space in Elem array"<<endl;
         }
     }
+    void addElem(Element e[], int arrlen){
+        for(int i=0; i<arrlen; i++){
+            addElem(e[i]);
+        } 
+    }
     float getNutrientVal(string nutrName){
         float nutrSum=0;
         for(int i=0;i<elemTail+1;i++){
@@ -218,6 +232,17 @@ class Day{
 
     }
 
+    void addMeal(Element e[], int arrlen, int h){
+        Meals[h].set(dayIndex,h);
+        Meals[h].addElem(e,arrlen);
+    }
+
+    void addMeal(Element e, int h){
+        Meals[h].set(dayIndex,h);
+        Meals[h].addElem(e);
+        cout<<e.getNutrientVal("weight")<<endl;
+    }
+
     void addVariable(Variable v){
         int h=v.getHour();
         v.set(dayIndex,h);
@@ -225,11 +250,19 @@ class Day{
 
     }
 
+    void addVariable(string name, int scale, int h){
+        Variables[h].set(name,dayIndex,h,scale);
+    }
+
     void addOutcome(Variable o){
         int h=o.getHour();
         o.set(dayIndex,h);
         Outcomes[h]=o;
 
+    }
+
+    void addOutcome(string name, int scale, int h){
+        Outcomes[h].set(name,dayIndex,h,scale);
     }
 
     float* getNutrArr(string nutrname){
@@ -351,15 +384,12 @@ int main()
     for(int i=0; i<len; i++){
         days[i].setIndex(i);
     }
-
-    //testing getmatlabarray
-    //float test[3][3] = {{0.1,0.2,0.3},{0.4,0.5,0.6},{0.7,0.8,0.9}};
-    //cout<<getMatlabArray(test,3,3);
-    int test[3]={1,2,3};
-    int test2[4]={4,5,6,7};
-    int *newArr = new int[7];
-    newArr= stitchArr(test,3,test2,4);
-    cout<<getMatlabArray(newArr,7)<<endl;
     
+    //day 0
+    string nutrnames[]={"weight","energy","protein","carbs","sugar","fibre","fat","satfat","cholesterol","calcium","iron","sodium","potassium","magnesium","phosphorus","vitA","vitC","caffeine"};
+    float teavals[]={250, 3, 0, 1, 0, 0, 0, 0, 0, 0, 0.1, 8, 93, 8, 3, 0, 0, 50};
+    Element tea(0.90,nutrnames,teavals,18); //energy protein carbs sugar fibre fat satfat cholesterol calcium iron sodium potassium magnetium phospoorus vitA vitC caffeine
+    days[1].addMeal(tea,0);
+
     return 0;
 }
