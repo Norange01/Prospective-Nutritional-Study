@@ -271,6 +271,12 @@ class Day{
         Outcomes[h].set(name,dayIndex,h,scale);
     }
 
+    void addOutcome(string name, int scale, int h, int duration){
+        for(int i=0; i<duration; i++){
+            Outcomes[h+i].set(name,dayIndex,h,scale);
+        }
+    }
+
     float* getNutrArr(string nutrname){
         float* nutrArr = new float[24];
         //initialize to zero
@@ -346,6 +352,22 @@ string getMatlabArray(int Arr[], int len){
     }
     matlabArr+="]";
     return matlabArr;
+}
+
+float *addUpArrays(float* arr1, float* arr2, int len){
+    float* arr3 = new float[len];
+    for(int i=0; i<len; i++){
+        arr3[i]=arr1[i]+arr2[i];
+    }
+    return arr3;
+}
+
+int *addUpArrays(int* arr1, int* arr2, int len){
+    int* arr3 = new int[len];
+    for(int i=0; i<len; i++){
+        arr3[i]=arr1[i]+arr2[i];
+    }
+    return arr3;
 }
 
 float *stitchArr(float* arr1, int arr1Len, float* arr2, int arr2Len){
@@ -439,6 +461,83 @@ int main()
     days[15].addVariable("sleepQuality",10);
     days[16].addVariable("sleepQuality",10);
     days[17].addVariable("sleepQuality",10);
+
+    //wake up time
+    days[0].addVariable("wakeUpTime",11);
+    days[1].addVariable("wakeUpTime",11);
+    days[2].addVariable("wakeUpTime",9);
+    days[3].addVariable("wakeUpTime",11);
+    days[4].addVariable("wakeUpTime",11);
+    days[5].addVariable("wakeUpTime",11);
+    days[6].addVariable("wakeUpTime",11);
+    days[7].addVariable("wakeUpTime",11);
+    days[8].addVariable("wakeUpTime",10);
+    days[9].addVariable("wakeUpTime",11);
+    days[10].addVariable("wakeUpTime",13);
+    days[11].addVariable("wakeUpTime",12);
+    days[12].addVariable("wakeUpTime",12);
+    days[13].addVariable("wakeUpTime",13);
+    days[14].addVariable("wakeUpTime",12);
+    days[15].addVariable("wakeUpTime",13);
+    days[16].addVariable("wakeUpTime",12);
+    days[17].addVariable("wakeUpTime",13);
+
+    //bedtime
+    days[0].addVariable("bedtime",0);
+    days[1].addVariable("bedtime",0);
+    days[2].addVariable("bedtime",1);
+    days[3].addVariable("bedtime",1);
+    days[4].addVariable("bedtime",1);
+    days[5].addVariable("bedtime",1);
+    days[6].addVariable("bedtime",1);
+    days[7].addVariable("bedtime",1);
+    days[8].addVariable("bedtime",2);
+    days[9].addVariable("bedtime",2);
+    days[10].addVariable("bedtime",1);
+    days[11].addVariable("bedtime",2);
+    days[12].addVariable("bedtime",2);
+    days[13].addVariable("bedtime",3);
+    days[14].addVariable("bedtime",3);
+    days[15].addVariable("bedtime",4);
+    days[16].addVariable("bedtime",4);
+    days[17].addVariable("bedtime",4);
+
+    //tehdits, morning
+    days[1].addOutcome("tehdit",7,9,4);
+    days[2].addOutcome("tehdit",7,9,4);
+    days[6].addOutcome("tehdit",10,9,4);
+    days[9].addOutcome("tehdit",4,9,4);
+    //tehdit, afternoon
+    days[0].addOutcome("tehdit",7,13,5);
+    days[1].addOutcome("tehdit",7,13,5);
+    days[5].addOutcome("tehdit",7,13,5);
+    days[8].addOutcome("tehdit",7,13,2);
+    days[9].addOutcome("tehdit",9,13,5);
+    days[10].addOutcome("tehdit",7,13,5);
+    days[11].addOutcome("tehdit",7,15,3);
+    days[13].addOutcome("tehdit",6,13,5);
+    days[14].addOutcome("tehdit",7,13,5);
+    days[15].addOutcome("tehdit",6,13,5);
+    days[16].addOutcome("tehdit",7,13,5);
+    days[17].addOutcome("tehdit",7,13,5);
+    //tehdit, evening
+    days[0].addOutcome("tehdit",7,20,4);
+    days[1].addOutcome("tehdit",8,18,6);
+    days[3].addOutcome("tehdit",7,20,4);
+    days[4].addOutcome("tehdit",7,20,4);
+    days[5].addOutcome("tehdit",7,18,6);
+    days[6].addOutcome("tehdit",7,18,6);
+    days[7].addOutcome("tehdit",7,18,6);
+    days[8].addOutcome("tehdit",7,20,4);
+    days[9].addOutcome("tehdit",7,18,6);
+    days[11].addOutcome("tehdit",7,18,3);
+    days[12].addOutcome("tehdit",9,18,6);
+    days[13].addOutcome("tehdit",7,18,6);
+    days[15].addOutcome("tehdit",4,20,4);
+    days[16].addOutcome("tehdit",7,18,6);
+    days[17].addOutcome("tehdit",7,18,6);
+
+
 
     int* sleepQualityArr = getCombinedVarArr("sleepQuality",days,len);
     cout<<getMatlabArray(sleepQualityArr,len*24);
