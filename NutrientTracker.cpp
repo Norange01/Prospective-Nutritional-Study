@@ -240,7 +240,7 @@ class Day{
     void addMeal(Element e, int h){
         Meals[h].set(dayIndex,h);
         Meals[h].addElem(e);
-        cout<<e.getNutrientVal("weight")<<endl;
+        //cout<<e.getNutrientVal("weight")<<endl;
     }
 
     void addVariable(Variable v){
@@ -252,6 +252,12 @@ class Day{
 
     void addVariable(string name, int scale, int h){
         Variables[h].set(name,dayIndex,h,scale);
+    }
+
+    void addVariable(string name, int scale){
+        for(int h=0; h<24; h++){
+            Variables[h].set(name,dayIndex,h,scale);
+        }
     }
 
     void addOutcome(Variable o){
@@ -267,6 +273,11 @@ class Day{
 
     float* getNutrArr(string nutrname){
         float* nutrArr = new float[24];
+        //initialize to zero
+        for(int i=0; i<24; i++){
+            nutrArr[i]=0;
+        }
+        //fill with right values
         for(int i=0; i<24; i++){
             nutrArr[i]=Meals[i].getNutrientVal(nutrname);
         }
@@ -275,6 +286,11 @@ class Day{
 
     int* getVarArr(string varname){
         int* varArr = new int[24];
+        //initialize to zero
+        for(int i=0; i<24; i++){
+            varArr[i]=0;
+        }
+        //fill with right values
         for(int i=0; i<24; i++){
             if(Variables[i].getName()==varname){
                 varArr[i]=Variables[i].getScale();
@@ -285,6 +301,11 @@ class Day{
 
     int* getOutcomeArr(string outname){
         int* outArr = new int[24];
+        //initialize to zero
+        for(int i=0; i<24; i++){
+            outArr[i]=0;
+        }
+        //fill with right values
         for(int i=0; i<24; i++){
             if(Outcomes[i].getName()==outname){
                 outArr[i]=Variables[i].getScale();
@@ -375,15 +396,53 @@ string *stitchArr(string* arr1, int arr1Len, string* arr2, int arr2Len){
     return newArr;
 }
 
+int *getCombinedVarArr(string varName, Day days[], int len){
+    int *varArr = new int[len*24];
+
+    for(int i=0; i<len; i++){
+        int* dayVarArr = days[i].getVarArr(varName);
+        for(int j=0; j<24; j++){
+            varArr[(i*24)+j]=dayVarArr[j];
+        }
+
+    }
+    return varArr;
+
+}
+
 
 int main()
 {
     
-    int len = 3;
+    int len = 30;
     Day *days = new Day[len];
     for(int i=0; i<len; i++){
         days[i].setIndex(i);
     }
+
+    //sleep quality
+    days[0].addVariable("sleepQuality",6);
+    days[1].addVariable("sleepQuality",3);
+    days[2].addVariable("sleepQuality",3);
+    days[3].addVariable("sleepQuality",6);
+    days[4].addVariable("sleepQuality",6);
+    days[5].addVariable("sleepQuality",8);
+    days[6].addVariable("sleepQuality",8);
+    days[7].addVariable("sleepQuality",8);
+    days[8].addVariable("sleepQuality",6);
+    days[9].addVariable("sleepQuality",8);
+    days[10].addVariable("sleepQuality",8);
+    days[11].addVariable("sleepQuality",6);
+    days[12].addVariable("sleepQuality",8);
+    days[13].addVariable("sleepQuality",6);
+    days[14].addVariable("sleepQuality",10);
+    days[15].addVariable("sleepQuality",10);
+    days[16].addVariable("sleepQuality",10);
+    days[17].addVariable("sleepQuality",10);
+
+    int* sleepQualityArr = getCombinedVarArr("sleepQuality",days,len);
+    cout<<getMatlabArray(sleepQualityArr,len*24);
+
     
     //day 0
     string nutrnames[]={"weight","energy","protein","carbs","sugar","fibre","fat","satfat","cholesterol","calcium","iron","sodium","potassium","magnesium","phosphorus","vitA","vitC","caffeine"};
