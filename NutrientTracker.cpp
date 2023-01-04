@@ -256,19 +256,15 @@ class Day{
     }
 
     void addVariable(string name, int scale, int h){
-        for(int i=0; i<Variables[h].size();i++){
-            if(Variables[h][i].getName()==name){
-                Variables[h][i].set(name,dayIndex,h,scale);
-            }
-        }
+        Variables[h].push_back(Variable(name,dayIndex,h,scale));
         
     }
 
     void addVariable(string name, int scale){
         for(int h=0; h<24; h++){
-            for(int i=0; i<Variables[h].size();i++){
-                Variables[h][i].set(name,dayIndex,h,scale);
-            }           
+            
+            Variables[h].push_back(Variable(name,dayIndex,h,scale));
+                       
         }
     }
 
@@ -280,18 +276,14 @@ class Day{
     }
 
     void addOutcome(string name, int scale, int h){
-        for(int i=0; i<Outcomes[h].size();i++){
-            if(Outcomes[h][i].getName()==name){
-                Outcomes[h][i].set(name,dayIndex,h,scale);
-            }
-        }
+        Outcomes[h].push_back(Variable(name,dayIndex,h,scale));
     }
 
     void addOutcome(string name, int scale, int h, int duration){
         for(int i=0; i<duration; i++){
-            for(int j=0; j<Outcomes[h+i].size();j++){
-                Outcomes[h+i][j].set(name,dayIndex,h,scale);
-            }
+            
+            Outcomes[h+i].push_back(Variable(name,dayIndex,h,scale));
+            
         }
     }
 
@@ -604,6 +596,7 @@ int main()
     days[13].addOutcome("headache",6,18,6);
     days[17].addOutcome("headache",6,18,6);
 
+    cout<<" "<<days[0].Outcomes[22].size()<<endl;
 
 // CREATE VECTOR/LIST FOR VAR ADDITION
 
@@ -613,6 +606,9 @@ int main()
 
     int* tehdit = getCombinedOutcomeArr("tehdit",days,len);
     cout<<"tehdit = "<<getMatlabArray(tehdit,len*24);
+
+    int* headache = getCombinedOutcomeArr("headache",days,len);
+    cout<<"headache = "<<getMatlabArray(headache,len*24);
 
     
     //day 0
