@@ -2,6 +2,7 @@
 #include <string>
 #include <math.h>
 #include <sstream>
+#include <vector>
 
 using namespace std;
 
@@ -200,14 +201,14 @@ class Day{
     public:
     Day(){
         Meals = new Meal[24];
-        Variables = new Variable[24];
-        Outcomes = new Variable[24];
+        Variables = new vector<Variable>[24];
+        Outcomes = new vector<Variable>[24];
         dayIndex=-1;
     }
     Day(int ind){
         Meals = new Meal[24];
-        Variables = new Variable[24];
-        Outcomes = new Variable[24];
+        Variables = new vector<Variable>[24];
+        Outcomes = new vector<Variable>[24];
         dayIndex=ind;
         setIndex(dayIndex);
     }
@@ -216,8 +217,12 @@ class Day{
         dayIndex=index;
         for(int i=0; i<24; i++){
             Meals[i].set(index,i);
-            Variables[i].set(index,i);
-            Outcomes[i].set(index,i);
+            for(int j=0; j<Variables[i].size(); j++){
+                Variables[i][j].set(index,i);
+            }
+            for(int j=0; j<Outcomes[i].size(); j++){
+                Outcomes[i][j].set(index,i);
+            }
         }
     }
         
@@ -246,34 +251,47 @@ class Day{
     void addVariable(Variable v){
         int h=v.getHour();
         v.set(dayIndex,h);
-        Variables[h]=v;
+        Variables[h].push_back(v);
 
     }
 
     void addVariable(string name, int scale, int h){
-        Variables[h].set(name,dayIndex,h,scale);
+        for(int i=0; i<Variables[h].size();i++){
+            if(Variables[h][i].getName()==name){
+                Variables[h][i].set(name,dayIndex,h,scale);
+            }
+        }
+        
     }
 
     void addVariable(string name, int scale){
         for(int h=0; h<24; h++){
-            Variables[h].set(name,dayIndex,h,scale);
+            for(int i=0; i<Variables[h].size();i++){
+                Variables[h][i].set(name,dayIndex,h,scale);
+            }           
         }
     }
 
     void addOutcome(Variable o){
         int h=o.getHour();
         o.set(dayIndex,h);
-        Outcomes[h]=o;
+        Outcomes[h].push_back(o);
 
     }
 
     void addOutcome(string name, int scale, int h){
-        Outcomes[h].set(name,dayIndex,h,scale);
+        for(int i=0; i<Outcomes[h].size();i++){
+            if(Outcomes[h][i].getName()==name){
+                Outcomes[h][i].set(name,dayIndex,h,scale);
+            }
+        }
     }
 
     void addOutcome(string name, int scale, int h, int duration){
         for(int i=0; i<duration; i++){
-            Outcomes[h+i].set(name,dayIndex,h,scale);
+            for(int j=0; j<Outcomes[h+i].size();j++){
+                Outcomes[h+i][j].set(name,dayIndex,h,scale);
+            }
         }
     }
 
@@ -298,9 +316,13 @@ class Day{
         }
         //fill with right values
         for(int i=0; i<24; i++){
-            if(Variables[i].getName()==varname){
-                varArr[i]=Variables[i].getScale();
+            for(int j=0; j<Variables[i].size();j++){
+                if(Variables[i][j].getName()==varname){
+                    varArr[i]=Variables[i][j].getScale();
+                }
+                
             }
+            
         }
         return varArr;
     }
@@ -313,8 +335,10 @@ class Day{
         }
         //fill with right values
         for(int i=0; i<24; i++){
-            if(Outcomes[i].getName()==outname){
-                outArr[i]=Variables[i].getScale();
+            for(int j=0; j<Outcomes[i].size();j++){
+                if(Outcomes[i][j].getName()==outname){
+                    outArr[i]=Outcomes[i][j].getScale();
+                }
             }
         }
         return outArr;
@@ -322,8 +346,8 @@ class Day{
 
     int dayIndex;
     Meal *Meals;
-    Variable *Variables;
-    Variable *Outcomes;
+    vector<Variable> *Variables;
+    vector<Variable> *Outcomes;
 
 
 };
@@ -432,6 +456,20 @@ int *getCombinedVarArr(string varName, Day days[], int len){
 
 }
 
+int *getCombinedOutcomeArr(string outName, Day days[], int len){
+    int *outArr = new int[len*24];
+
+    for(int i=0; i<len; i++){
+        int* dayOutArr = days[i].getOutcomeArr(outName);
+        for(int j=0; j<24; j++){
+            outArr[(i*24)+j]=dayOutArr[j];
+        }
+
+    }
+    return outArr;
+
+}
+
 
 int main()
 {
@@ -502,6 +540,14 @@ int main()
     days[16].addVariable("bedtime",4);
     days[17].addVariable("bedtime",4);
 
+    //sleep hours
+    for(int i=0; i<len; i++){
+        if(i!=0){
+            days[i].addVariable("sleepHours",(days[i].getVarArr("wakeUpTime")[0]-days[i-1].getVarArr("bedtime")[0]));
+        }
+    }
+    cout<<"sleep hours "<<getCombinedVarArr("sleepHours",days,len)[1];
+
     //tehdits, morning
     days[1].addOutcome("tehdit",7,9,4);
     days[2].addOutcome("tehdit",7,9,4);
@@ -537,10 +583,36 @@ int main()
     days[16].addOutcome("tehdit",7,18,6);
     days[17].addOutcome("tehdit",7,18,6);
 
+    //headache, morning
+    days[6].addOutcome("headache",5,9,4);
+    days[12].addOutcome("headache",7,9,4);
+    days[13].addOutcome("headache",7,6,1);
+    //headache, afternoon
+    days[2].addOutcome("headache",3,13,5);
+    days[6].addOutcome("headache",5,13,5);
+    days[9].addOutcome("headache",3,13,5);
+    days[11].addOutcome("headache",3,15,3);
+    days[14].addOutcome("headache",5,13,5);
+    //headache, evening
+    days[0].addOutcome("headache",3,21,3);
+    days[1].addOutcome("headache",4,21,3);
+    days[2].addOutcome("headache",8,18,6);
+    days[5].addOutcome("headache",4,18,6);
+    days[6].addOutcome("headache",4,18,6);
+    days[9].addOutcome("headache",3,18,6);
+    days[12].addOutcome("headache",4,18,6);
+    days[13].addOutcome("headache",6,18,6);
+    days[17].addOutcome("headache",6,18,6);
 
 
-    int* sleepQualityArr = getCombinedVarArr("sleepQuality",days,len);
-    cout<<getMatlabArray(sleepQualityArr,len*24);
+// CREATE VECTOR/LIST FOR VAR ADDITION
+
+
+    //int* sleepQualityArr = getCombinedVarArr("sleepQuality",days,len);
+    //cout<<getMatlabArray(sleepQualityArr,len*24);
+
+    int* tehdit = getCombinedOutcomeArr("tehdit",days,len);
+    cout<<"tehdit = "<<getMatlabArray(tehdit,len*24);
 
     
     //day 0
