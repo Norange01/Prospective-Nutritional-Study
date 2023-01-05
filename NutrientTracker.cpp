@@ -538,7 +538,8 @@ int main()
             days[i].addVariable("sleepHours",(days[i].getVarArr("wakeUpTime")[0]-days[i-1].getVarArr("bedtime")[0]));
         }
     }
-    cout<<"sleep hours "<<getCombinedVarArr("sleepHours",days,len)[1];
+    int* sleepHours = getCombinedVarArr("sleepHours",days,len);
+    cout<<"sleepHours = "<<getMatlabArray(sleepHours,len*24)<<endl;
 
     //tehdits, morning
     days[1].addOutcome("tehdit",7,9,4);
@@ -596,7 +597,19 @@ int main()
     days[13].addOutcome("headache",6,18,6);
     days[17].addOutcome("headache",6,18,6);
 
-    cout<<" "<<days[0].Outcomes[22].size()<<endl;
+    //pills
+    //days 0 to dec 25 50 and dec 26 and after 25
+    for(int i=0; i<12; i++){
+        days[i].addVariable("PillDose",50);
+    }
+    for(int i=12; i<len; i++){
+        days[i].addVariable("PillDose",25);
+    }
+
+    int* PillDose = getCombinedVarArr("PillDose",days,len);
+    cout<<"PillDose = "<<getMatlabArray(PillDose,len*24)<<endl;
+
+    
 
 // CREATE VECTOR/LIST FOR VAR ADDITION
 
@@ -605,10 +618,10 @@ int main()
     //cout<<getMatlabArray(sleepQualityArr,len*24);
 
     int* tehdit = getCombinedOutcomeArr("tehdit",days,len);
-    cout<<"tehdit = "<<getMatlabArray(tehdit,len*24);
+    cout<<"tehdit = "<<getMatlabArray(tehdit,len*24)<<endl;
 
     int* headache = getCombinedOutcomeArr("headache",days,len);
-    cout<<"headache = "<<getMatlabArray(headache,len*24);
+    cout<<"headache = "<<getMatlabArray(headache,len*24)<<endl;
 
     
     //day 0
