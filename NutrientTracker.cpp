@@ -625,10 +625,17 @@ int main()
 
     
     //day 0
-    string nutrnames[]={"weight","energy","protein","carbs","sugar","fibre","fat","satfat","cholesterol","calcium","iron","sodium","potassium","magnesium","phosphorus","vitA","vitC","caffeine"};
-    float teavals[]={250, 3, 0, 1, 0, 0, 0, 0, 0, 0, 0.1, 8, 93, 8, 3, 0, 0, 50};
-    Element tea(0.90,nutrnames,teavals,18); //energy protein carbs sugar fibre fat satfat cholesterol calcium iron sodium potassium magnetium phospoorus vitA vitC caffeine
-    days[1].addMeal(tea,0);
+    //string nutrnames[]={"weight","energy","protein","carbs","sugar","fibre","fat","satfat","cholesterol","calcium","iron","sodium","potassium","magnesium","phosphorus","vitA","vitC","caffeine"};
+    //float teavals[]={250, 3, 0, 1, 0, 0, 0, 0, 0, 0, 0.1, 8, 93, 8, 3, 0, 0, 50};
+    //Element tea(0.90,nutrnames,teavals,18); //energy protein carbs sugar fibre fat satfat cholesterol calcium iron sodium potassium magnetium phospoorus vitA vitC caffeine
+    //days[1].addMeal(tea,0);
+
+    //Meal Elements
+    string nutrnames[]={"weight","energy","protein","carbs","sugar","fibre","fat","satfat","cholesterol","calcium","iron","sodium","potassium","magnesium","phosphorus","riboflavin","niacin","folate"};
+    float cerealringsvals[]={24, 95, 3, 18, 1, 2.2, 2, 0.2, 0, 44, 3.2, 219, 78, 32, 105, 0.04, 1.1, 28}; //per half a cup
+    Element Cereal_rings(2,nutrnames,cerealringsvals,18);
+    float cerealallbranvals[]={35, 92, 4, 27, 6, 11.8, 2, 0.4, 0, 30, 4.7, 305, 408, 130, 350, 0.7, 0.07, 6.0, 50}; //per half a cup
+    Element CerealAllBran(1,nutrnames,cerealallbranvals,18);
 
     return 0;
 }
