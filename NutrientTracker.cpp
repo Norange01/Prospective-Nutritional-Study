@@ -124,7 +124,8 @@ class Element{
                 return Nutrients[i].getVal();
             }
         }
-        cout<<"ERROR: Nutrient not found"<<endl;
+        return 0;
+        //cout<<"ERROR: Nutrient not found"<<endl;
     }
 
     private:
@@ -162,6 +163,9 @@ class Meal{
     }
     int getHour(){
         return hour;
+    }
+    int getDay(){
+        return day;
     }
     void addElem(Element e){
         elemTail++;
@@ -233,7 +237,16 @@ class Day{
         //do array with 24 empty slots for each hour
         int h= m.getHour();
         m.set(dayIndex,h);
-        Meals[h]=m;
+        //Meals[h]=m;
+        if(dayIndex==-1){
+            dayIndex=m.getDay();
+        }
+
+        int firstInd = Meals[h].elemTail+1;
+
+        for(int i=firstInd; i<firstInd+m.elemTail+1;i++){
+            Meals[h].addElem(m.Elems[i-firstInd]);
+        }
 
     }
 
@@ -462,6 +475,20 @@ int *getCombinedOutcomeArr(string outName, Day days[], int len){
 
 }
 
+float *getCombinedNutrArr(string nutrName, Day days[], int len){
+    float *nutrArr = new float[len*24];
+
+    for(int i=0; i<len; i++){
+        float* dayNutrArr = days[i].getNutrArr(nutrName);
+        for(int j=0; j<24; j++){
+            nutrArr[(i*24)+j]=dayNutrArr[j];
+        }
+
+    }
+    return nutrArr;
+
+}
+
 
 int main()
 {
@@ -633,7 +660,7 @@ int main()
     //Meal Elements
     string nutrnames1[]={"weight","energy","protein","carbs","sugar","fibre","fat","satfat","cholesterol","calcium","iron","sodium","potassium","magnesium","phosphorus","riboflavin","niacin","folate"};
     float cerealringsvals[]={24, 95, 3, 18, 1, 2.2, 2, 0.2, 0, 44, 3.2, 219, 78, 32, 105, 0.04, 1.1, 28}; //per half a cup
-    Element Cereal_rings(65/24,nutrnames1,cerealringsvals,18);
+    Element Cereal_rings(2.708,nutrnames1,cerealringsvals,18);
     float cerealallbranvals[]={35, 92, 4, 27, 6, 11.8, 2, 0.4, 0, 30, 4.7, 305, 408, 130, 350, 0.7, 0.07, 6.0, 50}; //per half a cup
     Element CerealAllBran(0.5,nutrnames1,cerealallbranvals,18);//quarter of a cup
     string nutrnames2[]={"weight","energy","protein","carbs","sugar","fat","satfat","cholesterol","calcium","iron","sodium","potassium","magnesium","phosphorus","vitA","vitD","folate","vitB12","riboflavin"};
@@ -641,10 +668,10 @@ int main()
     Element CerealMilk(0.75,nutrnames2,milkvals,19);
     string nutrnames3[]={"weight","carbs","fibre","sugar","protein","potassium","calcium","iron"};
     float qaisyvals[] = {40,24,3,20,1,450,20,1};
-    Element Qaisy(1/3,nutrnames3,qaisyvals,8);
+    Element Qaisy(0.333,nutrnames3,qaisyvals,8);
     string nutrnames4[] = {"weight", "energy", "protein", "carbs", "sugar", "sodium"};
     float candycanevals[] = {6, 24, 0, 6, 4, 2};
-    Element candyCane(28/6,nutrnames4,candycanevals,6);
+    Element candyCane(2.167,nutrnames4,candycanevals,6);
     
     Element breakfastArr[] = {Cereal_rings,CerealMilk};
     Element breakfastArr2[] = {Cereal_rings,CerealAllBran,CerealMilk};
@@ -671,6 +698,29 @@ int main()
 
     //qaisy and candycane
     days[0].addMeal(Qaisy,15);
+    days[0].addMeal(candyCane,20);
+    days[1].addMeal(Qaisy,20);
+    days[2].addMeal(Qaisy,12);
+    days[2].addMeal(Qaisy,22);
+    days[3].addMeal(Qaisy,13);
+    days[3].addMeal(Qaisy,20);
+    days[3].addMeal(candyCane,22);
+    days[4].addMeal(Qaisy,13);
+    days[5].addMeal(Qaisy,12);
+    days[5].addMeal(candyCane,20);
+    days[6].addMeal(Qaisy,12);
+    days[6].addMeal(candyCane,21);
+    days[7].addMeal(Qaisy,15);
+    days[8].addMeal(Qaisy,15);
+    days[9].addMeal(Qaisy,19);
+    days[18].addMeal(candyCane,0);
+
+    float* weightArr = getCombinedNutrArr("weight",days,30);
+    cout<<"weight = "<<getMatlabArray(weightArr,len*24)<<endl;
+
+    float* potassiumArr = getCombinedNutrArr("potassium",days,30);
+    cout<<"potassium = "<<getMatlabArray(potassiumArr,len*24)<<endl;
+
     
 
 
