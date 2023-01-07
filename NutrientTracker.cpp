@@ -631,11 +631,49 @@ int main()
     //days[1].addMeal(tea,0);
 
     //Meal Elements
-    string nutrnames[]={"weight","energy","protein","carbs","sugar","fibre","fat","satfat","cholesterol","calcium","iron","sodium","potassium","magnesium","phosphorus","riboflavin","niacin","folate"};
+    string nutrnames1[]={"weight","energy","protein","carbs","sugar","fibre","fat","satfat","cholesterol","calcium","iron","sodium","potassium","magnesium","phosphorus","riboflavin","niacin","folate"};
     float cerealringsvals[]={24, 95, 3, 18, 1, 2.2, 2, 0.2, 0, 44, 3.2, 219, 78, 32, 105, 0.04, 1.1, 28}; //per half a cup
-    Element Cereal_rings(2,nutrnames,cerealringsvals,18);
+    Element Cereal_rings(65/24,nutrnames1,cerealringsvals,18);
     float cerealallbranvals[]={35, 92, 4, 27, 6, 11.8, 2, 0.4, 0, 30, 4.7, 305, 408, 130, 350, 0.7, 0.07, 6.0, 50}; //per half a cup
-    Element CerealAllBran(1,nutrnames,cerealallbranvals,18);
+    Element CerealAllBran(0.5,nutrnames1,cerealallbranvals,18);//quarter of a cup
+    string nutrnames2[]={"weight","energy","protein","carbs","sugar","fat","satfat","cholesterol","calcium","iron","sodium","potassium","magnesium","phosphorus","vitA","vitD","folate","vitB12","riboflavin"};
+    float milkvals[]={258,120,9,7,7,5,3,20,300,0,60,250,20,200,100,1.5,0,0.9,0.3};
+    Element CerealMilk(0.75,nutrnames2,milkvals,19);
+    string nutrnames3[]={"weight","carbs","fibre","sugar","protein","potassium","calcium","iron"};
+    float qaisyvals[] = {40,24,3,20,1,450,20,1};
+    Element Qaisy(1/3,nutrnames3,qaisyvals,8);
+    string nutrnames4[] = {"weight", "energy", "protein", "carbs", "sugar", "sodium"};
+    float candycanevals[] = {6, 24, 0, 6, 4, 2};
+    Element candyCane(28/6,nutrnames4,candycanevals,6);
+    
+    Element breakfastArr[] = {Cereal_rings,CerealMilk};
+    Element breakfastArr2[] = {Cereal_rings,CerealAllBran,CerealMilk};
+
+    //breakfast
+    days[0].addMeal(breakfastArr,3,12);
+    days[1].addMeal(breakfastArr,3,12);
+    days[2].addMeal(breakfastArr,3,12);
+    days[3].addMeal(breakfastArr,3,12);
+    days[4].addMeal(breakfastArr,3,12);
+    days[5].addMeal(breakfastArr,3,12);
+    days[6].addMeal(breakfastArr,3,12);
+    days[7].addMeal(breakfastArr,3,11);
+    days[8].addMeal(breakfastArr,3,13);
+    days[9].addMeal(breakfastArr,3,12);
+    days[10].addMeal(breakfastArr,3,13);
+    days[11].addMeal(breakfastArr,3,12);
+    days[12].addMeal(breakfastArr,3,12);
+    days[13].addMeal(breakfastArr,3,14);
+    days[14].addMeal(breakfastArr2,3,13);
+    days[15].addMeal(breakfastArr2,3,13);
+    days[16].addMeal(breakfastArr2,3,13);
+    days[17].addMeal(breakfastArr2,3,14);
+
+    //qaisy and candycane
+    days[0].addMeal(Qaisy,15);
+    
+
+
 
     return 0;
 }
